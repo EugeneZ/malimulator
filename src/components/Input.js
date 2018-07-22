@@ -2,23 +2,30 @@
 import React, { PureComponent } from 'react';
 
 type Props = {
-  onInput: (string)=>mixed,
-}
+  onInput: string => mixed,
+};
 
 type State = {
   input: string,
-}
+};
 export default class GUI extends PureComponent<Props, State> {
   state = {
     input: '',
-  }
+  };
 
   render() {
     return (
-      <div style={{ backgroundColor: 'black', height: 100, borderTop: '1px solid grey', padding: 2 }}>
+      <div
+        style={{
+          backgroundColor: 'black',
+          height: 100,
+          borderTop: '1px solid grey',
+          padding: 2,
+        }}
+      >
         <input
           type="text"
-          style={{ 
+          style={{
             border: 0,
             padding: '0 10px',
             background: 'none',
@@ -35,13 +42,13 @@ export default class GUI extends PureComponent<Props, State> {
           onKeyDown={this.handleKeyDown}
         />
       </div>
-    )
+    );
   }
 
-  handleKeyDown = (e) => {
+  handleKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       this.props.onInput(this.state.input);
       this.setState({ input: '' });
     }
-  }
+  };
 }

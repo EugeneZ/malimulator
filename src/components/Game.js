@@ -10,17 +10,18 @@ import HorizontalSplitter from './HorizontalSplitter';
 import { type Dispatch } from 'redux';
 
 export default connect((state: GameState) => state)(
-  class Game extends PureComponent<GameState & { dispatch: Dispatch<*> }> {
+  class Game extends PureComponent<{ dispatch: Dispatch<*> } & GameState> {
     componentDidMount() {
       this.props.dispatch(newGame());
     }
+
     render() {
       const { messages } = this.props;
       return (
         <Screen>
           <HorizontalSplitter
-            top={<Messages messages={messages}/>}
-            bottom={<Input onInput={this.handleInput}/>}
+            top={<Messages messages={messages} />}
+            bottom={<Input onInput={this.handleInput} />}
             bottomHeight={5}
           />
         </Screen>
@@ -28,7 +29,7 @@ export default connect((state: GameState) => state)(
     }
 
     handleInput = (input: string) => {
-      this.props.dispatch(inputEntered(input))
+      this.props.dispatch(inputEntered(input));
     };
-  }
+  },
 );
