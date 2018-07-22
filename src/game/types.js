@@ -20,7 +20,7 @@ export type JobInfo = {
 
 export type Effect = {
   +type: string,
-  +data: mixed,
+  +data: string | $ReadOnlyArray<string>,
 };
 
 export type FlowGenerator = Generator<Effect, void, mixed>;
