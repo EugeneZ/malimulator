@@ -1,78 +1,10 @@
 // @flow strict
-import * as Intro from './jobs/intro';
-import { type GameState, type Job } from './types';
-import {
-  type Action,
-  receivedChoices,
-  receivedMessage,
-  runFlow,
-} from './actionCreators';
+import { type GameState } from './types';
+import { type Action } from './actionCreators';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import channel from './util/channel';
-
-function gameMiddleware({ getState, dispatch }) {
-  const { put, listen } = channel();
-  return next => action => {
-    put(action);
-    if (action && action.type === 'state/newGame') {
-      dispatch(runFlow(Intro));
-    }
-    if (
-      action &&
-      typeof action.type === 'string' &&
-      action.type === 'flow/run'
-    ) {
-      import(`./jobs/${action.data.filename}`).then(
-        async ({ flow, title }: Job) => {
-          const generator = flow();
-          let nextArg;
-          while (true) {
-            const { value, done } = generator.next(nextArg);
-            nextArg = undefined;
-
-            if (!value) {
-              throw new Error('You must only yield effects.');
-            }
-
-            if (done) {
-              break;
-            }
-
-            switch (value.type) {
-              case 'flow/message':
-                if (typeof value.data !== 'string') {
-                  throw new Error('Message effect data must be a string');
-                }
-                dispatch(receivedMessage(`[${title}] ${value.data}`));
-                continue;
-              case 'flow/choices':
-                if (!Array.isArray(value.data)) {
-                  throw new Error('Choice effect data must be an array');
-                }
-                dispatch(receivedChoices(value.data));
-                nextArg = [
-                  await listen(action => {
-                    return action.type === 'input/entered' &&
-                      action.data &&
-                      ['1', '2'].includes(action.data)
-                      ? parseInt(action.data, 10) - 1
-                      : null;
-                  }),
-                ];
-                continue;
-              default:
-                throw new Error(`undefined effect ${JSON.stringify(value)}`);
-            }
-          }
-        },
-      );
-    }
-
-    return next(action);
-  };
-}
+import flow from './flow';
 
 const initialState = {
   jobs: [],
@@ -112,7 +44,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export default () => {
   const store = createStore(
     persistedReducer,
-    composeEnhancers(applyMiddleware(gameMiddleware)),
+    composeEnhancers(applyMiddleware(flow)),
   );
   const persistor = persistStore(store);
   persistor.purge();
