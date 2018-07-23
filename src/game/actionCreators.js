@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 import { type Job } from './types';
 
 export type NewGameAction = { +type: 'state/newGame' };

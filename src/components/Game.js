@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { type GameState } from '../game/types';

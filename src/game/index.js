@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 import * as Intro from './jobs/intro';
 import { type GameState, type Job } from './types';
 import {

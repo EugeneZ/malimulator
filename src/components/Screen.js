@@ -1,9 +1,9 @@
-// @flow
+// @flow strict
 import React, { PureComponent, type Node } from 'react';
 
 type Props = {
   children: Node,
-}
+};
 
 export default class Screen extends PureComponent<Props> {
   render() {
@@ -17,6 +17,6 @@ export default class Screen extends PureComponent<Props> {
       >
         {this.props.children}
       </div>
-    )
+    );
   }
 }

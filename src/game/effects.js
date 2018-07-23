@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 export type MessageEffect = {
   +type: 'flow/message',
   +data: string,

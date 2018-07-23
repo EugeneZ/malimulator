@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 import yieldJobChoices from '../util/yieldJobChoices';
 import { message, postJob } from '../effects';
 import { type FlowGenerator } from '../types';

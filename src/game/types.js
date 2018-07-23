@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 import Actor from './Actor';
 import { type Effect } from './effects';
 

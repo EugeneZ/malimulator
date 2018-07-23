@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 import { type FlowGenerator } from '../types';
 import { choice } from '../effects';
 

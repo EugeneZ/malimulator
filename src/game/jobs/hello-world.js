@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 import { message } from '../effects';
 import { type FlowGenerator } from '../types';
 

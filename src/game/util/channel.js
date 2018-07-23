@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 import { type Action } from '../actionCreators';
 
 export default function channel<T>() {

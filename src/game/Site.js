@@ -1,12 +1,8 @@
-// @flow
+// @flow strict
 import Job from './Job';
 
 export default class Site {
-  constructor() {
+  constructor() {}
 
-  }
-
-  listJobs() {
-    
-  }
+  listJobs() {}
 }
