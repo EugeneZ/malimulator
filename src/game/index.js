@@ -1,10 +1,11 @@
 // @flow
 import * as Intro from './jobs/intro';
-import { type GameState, type Job, type Effect } from './types';
+import { type GameState, type Job } from './types';
 import {
   type Action,
   receivedChoices,
   receivedMessage,
+  runFlow,
 } from './actionCreators';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
@@ -16,7 +17,7 @@ function gameMiddleware({ getState, dispatch }) {
   return next => action => {
     put(action);
     if (action && action.type === 'state/newGame') {
-      dispatch({ type: 'flow/run', data: Intro });
+      dispatch(runFlow(Intro));
     }
     if (
       action &&
@@ -52,11 +53,11 @@ function gameMiddleware({ getState, dispatch }) {
                 }
                 dispatch(receivedChoices(value.data));
                 nextArg = [
-                  await listen(({ type, data }: Effect) => {
-                    return type === 'input/entered' &&
-                      data &&
-                      ['1', '2'].includes(data)
-                      ? parseInt(data, 10) - 1
+                  await listen(action => {
+                    return action.type === 'input/entered' &&
+                      action.data &&
+                      ['1', '2'].includes(action.data)
+                      ? parseInt(action.data, 10) - 1
                       : null;
                   }),
                 ];

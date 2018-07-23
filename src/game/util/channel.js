@@ -1,11 +1,11 @@
 // @flow
-import { type Effect } from '../types';
+import { type Action } from '../actionCreators';
 
-export default function channel() {
+export default function channel<T>() {
   const listeners = [];
 
   return {
-    put(action: Effect) {
+    put(action: Action) {
       let i = listeners.length;
       while (i--) {
         const { listener, resolve } = listeners[i];
@@ -17,7 +17,7 @@ export default function channel() {
       }
     },
 
-    listen(listener: Effect => mixed) {
+    listen(listener: Action => T) {
       return new Promise(resolve => {
         listeners.push({
           listener,

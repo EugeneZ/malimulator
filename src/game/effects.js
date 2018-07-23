@@ -1,15 +1,29 @@
 // @flow
-export const message = (message: string) => ({
+export type MessageEffect = {
+  +type: 'flow/message',
+  +data: string,
+};
+export const message = (message: string): MessageEffect => ({
   type: 'flow/message',
   data: message,
 });
 
-export const choice = (choices: $ReadOnlyArray<string>) => ({
+export type ChoiceEffect = {
+  +type: 'flow/choices',
+  +data: $ReadOnlyArray<string>,
+};
+export const choice = (choices: $ReadOnlyArray<string>): ChoiceEffect => ({
   type: 'flow/choices',
   data: choices,
 });
 
-export const postJob = (filename: string) => ({
+export type PostJobEffect = {
+  +type: 'flow/postJob',
+  +data: string,
+};
+export const postJob = (filename: string): PostJobEffect => ({
   type: 'flow/postJob',
   data: filename,
 });
+
+export type Effect = MessageEffect | ChoiceEffect | PostJobEffect;

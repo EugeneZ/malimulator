@@ -1,5 +1,6 @@
 // @flow
 import Actor from './Actor';
+import { type Effect } from './effects';
 
 export type Attributes = {
   memory: number,
@@ -16,11 +17,6 @@ export type Flow = (primaryActor: Actor) => JobInfo;
 
 export type JobInfo = {
   flow: Flow,
-};
-
-export type Effect = {
-  +type: string,
-  +data: string | $ReadOnlyArray<string>,
 };
 
 export type FlowGenerator = Generator<Effect, void, mixed>;
