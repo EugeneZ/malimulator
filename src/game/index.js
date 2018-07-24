@@ -10,10 +10,15 @@ const persistConfig = {
   storage,
 };
 
+const persistedReducer = persistReducer(persistConfig, reducer);
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export default () => {
-  const store = createStore(reducer, composeEnhancers(applyMiddleware(flow)));
+  const store = createStore(
+    persistedReducer,
+    composeEnhancers(applyMiddleware(flow)),
+  );
   const persistor = persistStore(store);
   persistor.purge();
   return { store, persistor };

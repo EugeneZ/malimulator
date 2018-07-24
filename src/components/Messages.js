@@ -1,5 +1,6 @@
 // @flow strict
 import React, { PureComponent } from 'react';
+import { findLast } from 'ramda';
 import { type MessagesState } from '../game/types';
 
 type Props = {
@@ -21,19 +22,13 @@ export default class Messages extends PureComponent<Props> {
         }}
       >
         <div style={{ position: 'absolute', bottom: 0 }}>
-          {messages.map((message, i) => {
+          {messages.map(message => {
             const { jobId, job, message: text, choices } = message;
-            console.log(
-              message,
-              i,
-              messages,
-              messages.lastIndexOf(message) === i,
-            );
             return (
               <div>
                 [{jobId}) {job.title}] {text}
                 {choices &&
-                  messages.lastIndexOf(message) === i &&
+                  findLast(m => m.choices)(messages) === message &&
                   choices.map((choice, i) => (
                     <div style={{ paddingLeft: 20 }}>
                       {i + 1} -> {choice}
