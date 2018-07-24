@@ -27,22 +27,36 @@ export const receivedJob: Job => ReceivedJobAction = job => ({
 
 export type ReceivedMessageAction = {
   +type: 'message/received',
-  +data: string,
+  +data: {|
+    +jobId: number,
+    +job: Job,
+    +message: string,
+  |},
 };
-export const receivedMessage: string => ReceivedMessageAction = message => ({
+export const receivedMessage: (number, Job, string) => ReceivedMessageAction = (
+  jobId,
+  job,
+  message,
+) => ({
   type: 'message/received',
-  data: message,
+  data: { jobId, job, message },
 });
 
 export type ReceivedChoicesAction = {
   +type: 'choices/received',
-  +data: $ReadOnlyArray<string>,
+  +data: {
+    +jobId: number,
+    +job: Job,
+    +choices: $ReadOnlyArray<string>,
+  },
 };
 export const receivedChoices: (
+  number,
+  Job,
   $ReadOnlyArray<string>,
-) => ReceivedChoicesAction = choices => ({
+) => ReceivedChoicesAction = (jobId, job, choices) => ({
   type: 'choices/received',
-  data: choices,
+  data: { jobId, job, choices },
 });
 
 export type InputEnteredAction = {

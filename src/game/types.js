@@ -28,7 +28,14 @@ export type Job = {
   description?: string,
 };
 
+export type MessagesState = $ReadOnlyArray<{
+  +jobId: number,
+  +job: Job,
+  +message: string,
+  +choices?: $ReadOnlyArray<string>,
+}>;
+
 export type GameState = {
   +jobs: $ReadOnlyArray<JobInfo>,
-  +messages: $ReadOnlyArray<string>,
+  +messages: MessagesState,
 };
