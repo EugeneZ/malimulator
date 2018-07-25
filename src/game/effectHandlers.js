@@ -7,7 +7,7 @@ import {
   type Action,
 } from './actionCreators';
 import { type Effect } from './effects';
-import { type Job, type GameState } from './types';
+import { type Job } from './types';
 
 function checkForSkills(getState, skills) {
   const state = getState().skills;

@@ -2,7 +2,7 @@
 import { message, postJob, require } from '../effects';
 import { type FlowGenerator } from '../types';
 
-export const filename = 'adware-simple';
+export const filename = 'weather-simple';
 export const title = 'Simple Adware App';
 
 export function* flow(): FlowGenerator {
