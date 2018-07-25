@@ -6,6 +6,7 @@ const initialState = {
   jobs: [],
   messages: [],
   skills: [],
+  code: [],
 };
 
 export default function reducer(
@@ -22,6 +23,16 @@ export default function reducer(
       return {
         ...state,
         messages: [...state.messages, { message: 'Choose:', ...action.data }],
+      };
+    case 'code/received':
+      return {
+        ...state,
+        code: [...state.code, { jobId: action.data.jobId, done: false }],
+      };
+    case 'code/completed':
+      return {
+        ...state,
+        code: [...state.code, { jobId: action.data.jobId, done: true }],
       };
     default:
       return state;

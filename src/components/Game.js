@@ -8,6 +8,7 @@ import Input from './Input';
 import Messages from './Messages';
 import HorizontalSplitter from './HorizontalSplitter';
 import { type Dispatch } from 'redux';
+import Code from './Code';
 
 export default connect((state: GameState) => state)(
   class Game extends PureComponent<{ dispatch: Dispatch<Action> } & GameState> {
@@ -16,7 +17,7 @@ export default connect((state: GameState) => state)(
     }
 
     render() {
-      const { messages } = this.props;
+      const { messages, code } = this.props;
       return (
         <Screen>
           <HorizontalSplitter
@@ -24,6 +25,7 @@ export default connect((state: GameState) => state)(
             bottom={<Input onInput={this.handleInput} />}
             bottomHeight={5}
           />
+          {code.length > 0 && <Code />}
         </Screen>
       );
     }

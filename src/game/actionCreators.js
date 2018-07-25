@@ -87,6 +87,28 @@ export const receivedSkills: (
   data: skills,
 });
 
+export type CodeTaskReceivedAction = {
+  +type: 'code/received',
+  +data: {
+    jobId: number,
+  },
+};
+export const recievedCodeTask: number => CodeTaskReceivedAction = jobId => ({
+  type: 'code/received',
+  data: { jobId },
+});
+
+export type CodeTaskCompletedAction = {
+  +type: 'code/completed',
+  +data: {
+    jobId: number,
+  },
+};
+export const completedCodeTask: number => CodeTaskCompletedAction = jobId => ({
+  type: 'skills/completed',
+  data: { jobId },
+});
+
 export type Action =
   | NewGameAction
   | SaveAction
@@ -97,4 +119,6 @@ export type Action =
   | ReceivedMessageAction
   | ReceivedChoicesAction
   | InputEnteredAction
-  | ReceivedSkillsAction;
+  | ReceivedSkillsAction
+  | CodeTaskReceivedAction
+  | CodeTaskCompletedAction;

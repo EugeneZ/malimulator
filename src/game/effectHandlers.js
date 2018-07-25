@@ -4,6 +4,7 @@ import {
   receivedChoices,
   receivedMessage,
   runFlow,
+  recievedCodeTask,
   type Action,
 } from './actionCreators';
 import { type Effect } from './effects';
@@ -70,6 +71,14 @@ const effectHandlerMap: EffectHandlerMap<*> = {
     while (!checkForSkills(getState, value.data)) {
       await listen(action => action.type === 'skills/received');
     }
+  },
+  'flow/writeCode': async ({ jobId, listen, dispatch }) => {
+    dispatch(recievedCodeTask(jobId));
+    await listen(action => {
+      if (action.type !== 'code/completed' || action.data.jobId !== jobId) {
+        return null;
+      }
+    });
   },
 };
 

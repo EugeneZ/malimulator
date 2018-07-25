@@ -40,8 +40,16 @@ export const require = (skills: $ReadOnlyArray<string>): RequireEffect => ({
   data: skills,
 });
 
+export type WriteCodeEffect = {
+  +type: 'flow/writeCode',
+};
+export const writeCode = (): WriteCodeEffect => ({
+  type: 'flow/writeCode',
+});
+
 export type Effect =
   | MessageEffect
   | ChoiceEffect
   | PostJobEffect
-  | RequireEffect;
+  | RequireEffect
+  | WriteCodeEffect;
