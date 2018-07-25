@@ -5,6 +5,7 @@ import { type Action } from './actionCreators';
 const initialState = {
   jobs: [],
   messages: [],
+  skills: [],
 };
 
 export default function reducer(

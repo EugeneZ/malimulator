@@ -20,10 +20,28 @@ export const choice = (choices: $ReadOnlyArray<string>): ChoiceEffect => ({
 export type PostJobEffect = {
   +type: 'flow/postJob',
   +data: string,
+  +meta?: ?{ [string]: mixed },
 };
-export const postJob = (filename: string): PostJobEffect => ({
+export const postJob = (
+  filename: string,
+  options?: { [string]: mixed },
+): PostJobEffect => ({
   type: 'flow/postJob',
   data: filename,
+  meta: options,
 });
 
-export type Effect = MessageEffect | ChoiceEffect | PostJobEffect;
+export type RequireEffect = {
+  +type: 'flow/require',
+  +data: $ReadOnlyArray<string>,
+};
+export const require = (skills: $ReadOnlyArray<string>): RequireEffect => ({
+  type: 'flow/require',
+  data: skills,
+});
+
+export type Effect =
+  | MessageEffect
+  | ChoiceEffect
+  | PostJobEffect
+  | RequireEffect;

@@ -13,10 +13,18 @@ export const load: () => LoadAction = () => ({ type: 'state/load' });
 export type ResetAction = { +type: 'state/reset' };
 export const reset: () => ResetAction = () => ({ type: 'state/reset' });
 
-export type RunFlowAction = { +type: 'flow/run', +data: Job };
-export const runFlow: Job => RunFlowAction = job => ({
+export type RunFlowAction = {
+  +type: 'flow/run',
+  +data: Job,
+  +meta: ?{ [string]: mixed },
+};
+export const runFlow: (Job, ?{ [string]: mixed }) => RunFlowAction = (
+  job,
+  options,
+) => ({
   type: 'flow/run',
   data: job,
+  meta: options,
 });
 
 export type ReceivedJobAction = { +type: 'job/received', +data: Job };
@@ -68,6 +76,17 @@ export const inputEntered: string => InputEnteredAction = input => ({
   data: input,
 });
 
+export type ReceivedSkillsAction = {
+  +type: 'skills/received',
+  +data: $ReadOnlyArray<string>,
+};
+export const receivedSkills: (
+  $ReadOnlyArray<string>,
+) => ReceivedSkillsAction = skills => ({
+  type: 'skills/received',
+  data: skills,
+});
+
 export type Action =
   | NewGameAction
   | SaveAction
@@ -77,4 +96,5 @@ export type Action =
   | ReceivedJobAction
   | ReceivedMessageAction
   | ReceivedChoicesAction
-  | InputEnteredAction;
+  | InputEnteredAction
+  | ReceivedSkillsAction;

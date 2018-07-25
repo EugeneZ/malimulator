@@ -12,20 +12,16 @@ export type Attributes = {
   blackhat: number,
 };
 
-/* eslint-disable-next-line no-use-before-define */
-export type Flow = (primaryActor: Actor) => JobInfo;
-
-export type JobInfo = {
-  flow: Flow,
-};
-
 export type FlowGenerator = Generator<Effect, void, mixed>;
 
 export type Job = {
   filename: string,
   title: string,
-  flow: () => FlowGenerator,
   description?: string,
+};
+
+export type JobWithFlow<FA> = Job & {
+  flow: FA => FlowGenerator,
 };
 
 export type MessagesState = $ReadOnlyArray<{
@@ -36,6 +32,7 @@ export type MessagesState = $ReadOnlyArray<{
 }>;
 
 export type GameState = {
-  +jobs: $ReadOnlyArray<JobInfo>,
+  +jobs: $ReadOnlyArray<Job>,
   +messages: MessagesState,
+  +skills: $ReadOnlyArray<string>,
 };
