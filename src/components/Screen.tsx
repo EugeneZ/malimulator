@@ -1,11 +1,10 @@
-// @flow strict
-import React, { PureComponent, type Node } from 'react';
+import * as React from 'react';
 
-type Props = {
-  children: Node,
+interface Props {
+  children: React.ReactNode,
 };
 
-export default class Screen extends PureComponent<Props> {
+export default class Screen extends React.PureComponent<Props> {
   render() {
     return (
       <div

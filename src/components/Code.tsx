@@ -1,5 +1,4 @@
-// @flow strict
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import CraftyContainer from './CraftyContainer';
@@ -8,13 +7,13 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-type Props = {};
+interface Props {};
 
-type State = {
+interface State {
   open: boolean,
 };
 
-export default class Code extends PureComponent<Props, State> {
+export default class Code extends React.PureComponent<Props, State> {
   state = {
     open: true,
   };

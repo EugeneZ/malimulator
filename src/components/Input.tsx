@@ -1,14 +1,14 @@
-// @flow strict
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 
-type Props = {
-  onInput: string => mixed,
+interface Props {
+  onInput: (string) => void,
 };
 
-type State = {
+interface State {
   input: string,
 };
-export default class GUI extends PureComponent<Props, State> {
+
+export default class GUI extends React.PureComponent<Props, State> {
   state = {
     input: '',
   };
@@ -38,14 +38,14 @@ export default class GUI extends PureComponent<Props, State> {
             outline: 'none',
           }}
           value={this.state.input}
-          onChange={e => this.setState({ input: e.target.value })}
+          onChange={e => this.setState({ input: e.currentTarget.value })}
           onKeyDown={this.handleKeyDown}
         />
       </div>
     );
   }
 
-  handleKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+  handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       this.props.onInput(this.state.input);
       this.setState({ input: '' });

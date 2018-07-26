@@ -1,8 +1,7 @@
-// @flow strict
-import React, { Component } from 'react';
+import * as React from 'react';
 import Game from './components/Game';
 
-class App extends Component<{}> {
+class App extends React.PureComponent {
   render() {
     return <Game />;
   }

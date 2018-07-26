@@ -1,11 +1,8 @@
-// @flow strict
-import { type Action } from '../actionCreators';
-
-export default function channel<T>() {
-  const listeners = [];
+export default function channel() {
+  let listeners = [];
 
   return {
-    put(action: Action) {
+    put(action) {
       let i = listeners.length;
       while (i--) {
         const { listener, resolve } = listeners[i];
@@ -17,7 +14,7 @@ export default function channel<T>() {
       }
     },
 
-    listen(listener: Action => T) {
+    listen(listener) {
       return new Promise(resolve => {
         listeners.push({
           listener,

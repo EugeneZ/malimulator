@@ -1,6 +1,5 @@
-// @flow strict
 import { message, writeCode } from '../effects';
-import { type FlowGenerator } from '../types';
+import { FlowGenerator } from '../types';
 
 export const filename = 'hello-world';
 export const title = 'Hello World';

@@ -1,14 +1,11 @@
-// @flow strict
-import { type Dispatch } from 'redux';
+import { Dispatch } from 'redux';
 import {
   receivedChoices,
   receivedMessage,
   runFlow,
   recievedCodeTask,
-  type Action,
 } from './actionCreators';
-import { type Effect } from './effects';
-import { type Job } from './types';
+import { Job } from './types';
 
 function checkForSkills(getState, skills) {
   const state = getState().skills;
@@ -21,31 +18,18 @@ function checkForSkills(getState, skills) {
   return true;
 }
 
-type EffectHandlerParams<T> = {
-  dispatch: Dispatch<Action>,
-  value: Effect,
-  jobId: number,
-  job: Job,
-  listen: ((Action) => T) => Promise<*>,
-  getState: () => *,
-};
-
-type EffectHandler<T> = (EffectHandlerParams<T>) => Promise<mixed>;
-
-type EffectHandlerMap<T> = { [string]: EffectHandler<T> };
-
-const effectHandlerMap: EffectHandlerMap<*> = {
+const effectHandlerMap = {
   'flow/message': async ({ dispatch, value, jobId, job }) => {
     if (typeof value.data !== 'string') {
       throw new Error('Message effect data must be a string');
     }
-    dispatch(receivedMessage(jobId, job, `${value.data}`));
+    dispatch(receivedMessage({jobId, job, message: `${value.data}`}));
   },
   'flow/choices': async ({ dispatch, value, jobId, job, listen }) => {
     if (!Array.isArray(value.data)) {
       throw new Error('Choice effect data must be an array');
     }
-    dispatch(receivedChoices(jobId, job, value.data));
+    dispatch(receivedChoices({jobId, job, choices: value.data}));
     return [
       await listen(action => {
         if (action.type !== 'input/entered') {

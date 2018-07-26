@@ -1,10 +1,15 @@
-// @flow strict
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 //TODO import Crafty from 'craftyjs';
 
-type Props = {};
+interface Props {};
 
-export default class Code extends PureComponent<Props> {
+//TODO declare const Crafty: any;
+
+declare global {
+  interface Window { Crafty: any; }
+}
+
+export default class Code extends React.PureComponent<Props> {
   id: string = 'code_null';
 
   constructor(props) {

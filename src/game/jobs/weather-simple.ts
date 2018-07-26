@@ -1,6 +1,5 @@
-// @flow strict
-import { message, postJob, require } from '../effects';
-import { type FlowGenerator } from '../types';
+import { message, postJob, requireSkills } from '../effects';
+import { FlowGenerator } from '../types';
 
 export const filename = 'weather-simple';
 export const title = 'Simple Adware App';
@@ -18,6 +17,6 @@ export function* flow(): FlowGenerator {
   yield message(`At least, a little Java.`);
   yield message('Time to figure out how this goes...');
   yield postJob('hello-world', { language: 'java' });
-  yield require(['java']);
+  yield requireSkills(['java']);
   yield message('Ok, now you know enough Java to write this thing.');
 }

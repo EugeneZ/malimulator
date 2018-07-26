@@ -1,13 +1,12 @@
-// @flow strict
-import React, { PureComponent, type Node } from 'react';
+import * as React from 'react';
 
-type Props = {
-  top: Node,
-  bottom: Node,
+interface Props {
+  top: React.ReactNode,
+  bottom: React.ReactNode,
   bottomHeight: number,
 };
 
-export default class Messages extends PureComponent<Props> {
+export default class Messages extends React.PureComponent<Props> {
   render() {
     const { top, bottom, bottomHeight } = this.props;
     return (

@@ -1,5 +1,4 @@
-// @flow strict
-import { type Attributes } from './types';
+import { Attributes } from './types';
 
 export default class Actor {
   attributes = {};

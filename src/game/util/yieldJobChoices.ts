@@ -1,9 +1,8 @@
-// @flow strict
-import { type FlowGenerator } from '../types';
+import { FlowGenerator } from '../types';
 import { choice } from '../effects';
 
 export default function* yieldJobChoices(
-  choicesWithFlow: $ReadOnlyArray<{
+  choicesWithFlow: ReadonlyArray<{
     choice: string,
     flow: () => FlowGenerator,
   }>,

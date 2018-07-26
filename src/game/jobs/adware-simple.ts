@@ -1,6 +1,5 @@
-// @flow strict
-import { message, require } from '../effects';
-import { type FlowGenerator } from '../types';
+import { message, requireSkills } from '../effects';
+import { FlowGenerator } from '../types';
 
 export const filename = 'adware-simple';
 export const title = 'Simple Adware App';
@@ -19,5 +18,5 @@ export function* flow(): FlowGenerator {
     `Sounds like you need to understand how to clone apps, and how to use ad networks...`,
   );
   yield message('Time to figure out how this goes...');
-  yield require(['app cloning', 'ad networks']);
+  yield requireSkills(['app cloning', 'ad networks']);
 }
