@@ -14,7 +14,7 @@ export default class Messages extends PureComponent<Props> {
     return (
       <div
         style={{
-          fontFamily: 'Consolas, serif',
+          fontFamily: `'Share Tech Mono', monospace`,
           color: 'lime',
           position: 'relative',
           height: '100%',

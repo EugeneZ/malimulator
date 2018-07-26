@@ -10,7 +10,8 @@ export default class Screen extends PureComponent<Props> {
     return (
       <div
         style={{
-          backgroundColor: 'black',
+          background: `url(/screen.jpg) center top`,
+          backgroundSize: 'cover',
           height: '100vh',
           maxHeight: '100vh',
         }}
