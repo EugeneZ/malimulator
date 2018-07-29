@@ -1,15 +1,20 @@
 import { Dispatch } from 'redux';
-import { ActionType } from 'typesafe-actions';
+import { ActionType, getType } from 'typesafe-actions';
 import {
   receivedChoices,
   receivedMessage,
   runFlow,
   recievedCodeTask,
 } from './actionCreators';
+import * as Actions from './actionCreators';
 import * as Effects from './effects';
-import { Job } from './types';
+import { Job, GameState, Actions as ActionsType } from './types';
+import { Listener, Listen } from './util/channel';
 
-function checkForSkills(getState, skills) {
+function checkForSkills(
+  getState: () => GameState,
+  skills: ReadonlyArray<string>,
+) {
   const state = getState().skills;
   for (let skill of skills) {
     if (!state.includes(skill)) {
@@ -20,95 +25,148 @@ function checkForSkills(getState, skills) {
   return true;
 }
 
-interface EffectParams<E> { dispatch: Dispatch, effect: E, jobId: number, job: Job, listen: any, getState: any };
-type EffectHandler<E> = (params: EffectParams<E>)=>any;
-interface EffectHandlerMap {
-  readonly 'flow/message': EffectHandler<ActionType<typeof Effects.message>>,
-  readonly 'flow/choice': EffectHandler<ActionType<typeof Effects.choice>>,
-  readonly 'flow/postJob': EffectHandler<ActionType<typeof Effects.postJob>>,
-  readonly 'flow/requireSkills': EffectHandler<ActionType<typeof Effects.requireSkills>>,
-  readonly 'flow/writeCode': EffectHandler<ActionType<typeof Effects.writeCode>>
+interface EffectParams<E, T> {
+  readonly dispatch: Dispatch;
+  readonly effect: E;
+  readonly jobId: number;
+  readonly job: Job;
+  readonly listen: Listen<T>;
+  readonly getState: ()=>GameState;
 }
 
-async function message({ dispatch, effect, jobId, job }) {
+async function message<T>({
+  dispatch,
+  effect,
+  jobId,
+  job,
+}: EffectParams<ActionType<typeof Effects.message>, T>) {
   if (typeof effect.payload !== 'string') {
     throw new Error('Message effect data must be a string');
   }
-  dispatch(receivedMessage({jobId, job, message: `${effect.payload}`}));
+  dispatch(receivedMessage({ jobId, job, message: `${effect.payload}` }));
 }
 
-async function choice({ dispatch, effect, jobId, job, listen }) {
+async function choice({
+  dispatch,
+  effect,
+  jobId,
+  job,
+  listen,
+}: EffectParams<ActionType<typeof Effects.choice>, number | null>) {
   if (!Array.isArray(effect.payload)) {
     throw new Error('Choice effect data must be an array');
   }
-  dispatch(receivedChoices({jobId, job, choices: effect.payload}));
-  return [
-    await listen(action => {
+  dispatch(receivedChoices({ jobId, job, choices: effect.payload }));
+  return listen(action => {
       if (action.type !== 'input/entered') {
-        return null;
+        return;
       }
       const num = parseInt(action.payload, 10);
 
       if (num > 0 && num <= effect.payload.length) {
         return num - 1;
       }
-
-      return null;
-    }),
-  ];
+    });
 }
 
-async function postJob({ dispatch, effect }) {
+async function postJob({
+  dispatch,
+  effect,
+}: EffectParams<ActionType<typeof Effects.postJob>, void>) {
   import(`./jobs/${effect.payload.filename}`).then(
     job =>
-    effect.type === 'flow/postJob' && dispatch(runFlow(job, effect.payload.options)),
+      effect.type === 'flow/postJob' &&
+      dispatch(runFlow(job, effect.payload.options)),
   );
 }
 
-async function requireSkills({ effect, getState, listen }) {
+async function requireSkills({
+  effect,
+  getState,
+  listen,
+}: EffectParams<ActionType<typeof Effects.requireSkills>, boolean>) {
   while (!checkForSkills(getState, effect.payload)) {
-    await listen(action => action.type === 'skills/received');
+    await listen((action: ActionType<typeof Actions>) => action.type === 'skills/received');
   }
 }
 
-async function writeCode({ jobId, listen, dispatch }) {
-  dispatch(recievedCodeTask({jobId}));
-  await listen(action => {
+async function writeCode({
+  jobId,
+  listen,
+  dispatch,
+}: EffectParams<ActionType<typeof Effects.writeCode>, boolean>) {
+  dispatch(recievedCodeTask({ jobId }));
+  return listen((action: ActionType<typeof Actions>) => {
     if (action.type !== 'code/completed' || action.payload.jobId !== jobId) {
-      return null;
+      return;
     }
+
+    return true;
   });
 }
 
-export default function effectHandlers(effect, dispatch, jobId, getState, listen, job){
-  const params = {
-    dispatch,
-    jobId,
-    getState,
-    listen,
-    job,
-    effect
-  };
-
-  if (effect.type === 'flow/message') {
-    return message(params);
+export default function effectHandlers(
+  effect: ActionType<typeof Effects>,
+  dispatch: Dispatch,
+  jobId: number,
+  getState: () => GameState,
+  listen: Listen<void | boolean | number>,
+  job: Job,
+) {
+  if (effect.type === getType(Effects.message)) {
+    return message({
+      dispatch,
+      jobId,
+      getState,
+      listen,
+      job,
+      effect,
+    });
   }
 
-  if (effect.type === 'flow/choice') {
-    return choice(params);
+  if (effect.type === getType(Effects.choice)) {
+    return choice({
+      dispatch,
+      jobId,
+      getState,
+      listen,
+      job,
+      effect,
+    });
   }
 
-  if (effect.type === 'flow/postJob') {
-    return postJob(params);
+  if (effect.type === getType(Effects.postJob)) {
+    return postJob({
+      dispatch,
+      jobId,
+      getState,
+      listen,
+      job,
+      effect,
+    });
   }
 
-  if (effect.type === 'flow/requireSkills') {
-    return requireSkills(params);
+  if (effect.type === getType(Effects.requireSkills)) {
+    return requireSkills({
+      dispatch,
+      jobId,
+      getState,
+      listen,
+      job,
+      effect,
+    });
   }
 
-  if (effect.type === 'flow/writeCode') {
-    return writeCode(params);
+  if (effect.type === getType(Effects.writeCode)) {
+    return writeCode({
+      dispatch,
+      jobId,
+      getState,
+      listen,
+      job,
+      effect,
+    });
   }
 
   throw new Error(`undefined effect ${JSON.stringify(effect)}`);
-};
+}

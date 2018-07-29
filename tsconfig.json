@@ -3,6 +3,7 @@
     "allowJs": true,
     "jsx": "react",
     "downlevelIteration": true,
+    "noImplicitAny": true,
     "lib": [
       "dom",
       "es5",

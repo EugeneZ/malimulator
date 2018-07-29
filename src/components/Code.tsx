@@ -3,7 +3,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Slide from '@material-ui/core/Slide';
 import CraftyContainer from './CraftyContainer';
 
-function Transition(props) {
+function Transition(props: any) {
   return <Slide direction="up" {...props} />;
 }
 

@@ -2,7 +2,7 @@ import { ActionType, getType } from 'typesafe-actions';
 import * as Actions from './actionCreators';
 import { GameState } from './types';
 
-const initialState = {
+const initialState: GameState = {
   jobs: [],
   messages: [],
   skills: [],
@@ -10,7 +10,7 @@ const initialState = {
 };
 
 export default function reducer(
-  state: GameState = initialState,
+  state = initialState,
   action: ActionType<typeof Actions>,
 ) {
   switch (action.type) {

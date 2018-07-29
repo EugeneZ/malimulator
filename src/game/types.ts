@@ -1,5 +1,6 @@
 import { ActionType } from 'typesafe-actions';
 import * as Effects from './effects';
+import * as Actions from './actionCreators';
 
 export type Attributes = {
   memory: number,
@@ -20,7 +21,7 @@ export interface Job {
 };
 
 export type JobWithFlow = Job & {
-  flow: (any) => FlowGenerator,
+  flow: (args: any) => FlowGenerator,
 };
 
 export interface Message {
@@ -40,3 +41,6 @@ export interface GameState {
   readonly skills: ReadonlyArray<string>,
   readonly code: ReadonlyArray<Code>,
 };
+
+export type Actions = ActionType<typeof Actions>;
+export type Effects = ActionType<typeof Effects>;

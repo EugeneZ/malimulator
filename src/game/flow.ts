@@ -1,21 +1,27 @@
+import { ActionType } from 'typesafe-actions';
+import * as Effects from './effects';
 import * as Intro from './jobs/intro';
-import { JobWithFlow } from './types';
-import { runFlow } from './actionCreators';
+import { JobWithFlow, GameState } from './types';
+import * as Actions from './actionCreators';
 import channel from './util/channel';
 import effectHandlers from './effectHandlers';
+import { Dispatch } from 'redux';
 
-export default function flowMiddleware({
+export default function flowMiddleware<T>({
   getState,
   dispatch,
+}: {
+  getState: ()=>GameState,
+  dispatch: Dispatch
 }) {
-  const { put, listen } = channel();
+  const { put, listen } = channel<number | boolean | void>();
 
   let currentJobId = 1;
 
-  return (next) => (action) => {
+  return (next: Dispatch) => (action: ActionType<typeof Actions>) => {
     put(action);
     if (action && action.type === 'state/newGame') {
-      dispatch(runFlow(Intro, undefined));
+      dispatch(Actions.runFlow(Intro, undefined));
     }
     if (
       action &&
@@ -28,7 +34,7 @@ export default function flowMiddleware({
           let jobId = currentJobId++;
           let nextArg;
           while (true) {
-            const { value, done } = generator.next(nextArg);
+            const { value, done }: { value: ActionType<typeof Effects>, done: boolean } = generator.next(nextArg);
 
             if (done) {
               break;

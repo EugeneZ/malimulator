@@ -12,7 +12,7 @@ declare global {
 export default class Code extends React.PureComponent<Props> {
   id: string = 'code_null';
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     do {
       const suffix = Math.floor(Math.random() * 10000);
