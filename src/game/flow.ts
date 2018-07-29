@@ -4,8 +4,6 @@ import { runFlow } from './actionCreators';
 import channel from './util/channel';
 import effectHandlers from './effectHandlers';
 
-const effectTypes = Object.keys(effectHandlers);
-
 export default function flowMiddleware({
   getState,
   dispatch,
@@ -24,7 +22,7 @@ export default function flowMiddleware({
       typeof action.type === 'string' &&
       action.type === 'flow/run'
     ) {
-      import(`./jobs/${action.data.filename}`).then(
+      import(`./jobs/${action.payload.filename}`).then(
         async (job: JobWithFlow) => {
           const generator = job.flow(action.meta);
           let jobId = currentJobId++;
@@ -40,18 +38,7 @@ export default function flowMiddleware({
               throw new Error('You must only yield effects.');
             }
 
-            if (!effectTypes.includes(value.type)) {
-              throw new Error(`undefined effect ${JSON.stringify(value)}`);
-            }
-
-            nextArg = await effectHandlers[value.type]({
-              value,
-              dispatch,
-              jobId,
-              job,
-              getState,
-              listen,
-            });
+            nextArg = await effectHandlers(value, dispatch, jobId, getState, listen, job);
           }
         },
       );
