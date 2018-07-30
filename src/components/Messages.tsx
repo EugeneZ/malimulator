@@ -21,16 +21,16 @@ export default class Messages extends React.PureComponent<Props> {
         }}
       >
         <div style={{ position: 'absolute', bottom: 0 }}>
-          {messages.map(message => {
+          {messages.map((message, i) => {
             const { jobId, job, message: text, choices } = message;
             return (
-              <div>
+              <div key={`${jobId}_${i}`}>
                 [{jobId}) {job.title}] {text}
                 {choices &&
                   findLast<Message>(m => !!m.choices)(messages) === message &&
-                  choices.map((choice, i) => (
-                    <div style={{ paddingLeft: 20 }}>
-                      {i + 1} -> {choice}
+                  choices.map((choice, j) => (
+                    <div style={{ paddingLeft: 20 }} key={`${jobId}_${i}_${j}`}>
+                      {j + 1} -> {choice}
                     </div>
                   ))}
               </div>
