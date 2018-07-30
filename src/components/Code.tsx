@@ -7,13 +7,11 @@ function Transition(props: any) {
   return <Slide direction="up" {...props} />;
 }
 
-interface Props {};
-
 interface State {
-  open: boolean,
-};
+  open: boolean;
+}
 
-export default class Code extends React.PureComponent<Props, State> {
+export default class Code extends React.PureComponent<{}, State> {
   state = {
     open: true,
   };
@@ -31,5 +29,7 @@ export default class Code extends React.PureComponent<Props, State> {
     );
   }
 
-  handleClose = () => {};
+  handleClose = () => {
+    this.setState({ open: false });
+  };
 }

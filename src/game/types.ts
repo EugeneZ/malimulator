@@ -2,7 +2,7 @@ import { ActionType } from 'typesafe-actions';
 import * as Effects from './effects';
 import * as Actions from './actionCreators';
 
-export type Attributes = {
+export interface Attributes {
   memory: number,
   experience: number,
   enterprise: number,
@@ -33,7 +33,7 @@ export interface Message {
 
 export type MessagesState = ReadonlyArray<Message>;
 
-export type Code = { readonly jobId: number, readonly done: boolean };
+export interface Code { readonly jobId: number, readonly done: boolean };
 
 export interface GameState {
   readonly jobs: ReadonlyArray<Job>,

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 interface Props {
-  onInput: (string: string) => void,
+  onInput: (value: string) => void,
 };
 
 interface State {

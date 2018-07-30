@@ -15,7 +15,7 @@ interface Channel<T> {
 }
 
 export default function channel<T>(): Channel<T> {
-  let listeners: Array<ListenerHandler<T>> = [];
+  const listeners: Array<ListenerHandler<T>> = [];
 
   return {
     put(action: Actions) {

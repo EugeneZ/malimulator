@@ -7,7 +7,7 @@ export default function* yieldJobChoices(
     flow: () => FlowGenerator,
   }>,
 ): FlowGenerator {
-  const result = yield choice(choicesWithFlow.map(({ choice }) => choice));
+  const result = yield choice(choicesWithFlow.map(({ choice: choiceString }) => choiceString));
   const { flow } = choicesWithFlow[parseInt(result, 10)];
   yield* flow();
 }

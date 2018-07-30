@@ -1,18 +1,15 @@
 import * as React from 'react';
-//TODO import Crafty from 'craftyjs';
-
-interface Props {};
-
-//TODO declare const Crafty: any;
+// TODO import Crafty from 'craftyjs';
+// TODO declare const Crafty: any;
 
 declare global {
   interface Window { Crafty: any; }
 }
 
-export default class Code extends React.PureComponent<Props> {
+export default class Code extends React.PureComponent<{}> {
   id: string = 'code_null';
 
-  constructor(props: Props) {
+  constructor(props: {}) {
     super(props);
     do {
       const suffix = Math.floor(Math.random() * 10000);
@@ -27,14 +24,14 @@ export default class Code extends React.PureComponent<Props> {
 
     window.Crafty.init(width, height, target);
 
-    var dim1 = { x: 5, y: 5, w: 50, h: 50 };
-    var dim2 = { x: 20, y: 10, w: 60, h: 40 };
+    const dim1 = { x: 5, y: 5, w: 50, h: 50 };
+    const dim2 = { x: 20, y: 10, w: 60, h: 40 };
 
-    var rect1 = window.Crafty.e('2D, Canvas, Color')
+    const rect1 = window.Crafty.e('2D, Canvas, Color')
       .attr(dim1)
       .color('red');
 
-    var rect2 = window.Crafty.e('2D, Canvas, Color, Keyboard, Draggable')
+    const rect2 = window.Crafty.e('2D, Canvas, Color, Keyboard, Draggable')
       .attr(dim2)
       .color('blue');
 
@@ -57,6 +54,4 @@ export default class Code extends React.PureComponent<Props> {
   render() {
     return <div id={this.id} />;
   }
-
-  handleClose = () => {};
 }

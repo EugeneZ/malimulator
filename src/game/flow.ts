@@ -4,7 +4,7 @@ import * as Intro from './jobs/intro';
 import { JobWithFlow, GameState } from './types';
 import * as Actions from './actionCreators';
 import channel from './util/channel';
-import effectHandlers from './effectHandlers';
+import effectHandlers, { ListenerResults } from './effectHandlers';
 import { Dispatch } from 'redux';
 
 export default function flowMiddleware<T>({
@@ -14,7 +14,7 @@ export default function flowMiddleware<T>({
   getState: ()=>GameState,
   dispatch: Dispatch
 }) {
-  const { put, listen } = channel<number | boolean | void>();
+  const { put, listen } = channel<ListenerResults>();
 
   let currentJobId = 1;
 
@@ -31,8 +31,8 @@ export default function flowMiddleware<T>({
       import(`./jobs/${action.payload.filename}`).then(
         async (job: JobWithFlow) => {
           const generator = job.flow(action.meta);
-          let jobId = currentJobId++;
-          let nextArg;
+          const jobId = currentJobId++;
+          let nextArg: ListenerResults;
           while (true) {
             const { value, done }: { value: ActionType<typeof Effects>, done: boolean } = generator.next(nextArg);
 

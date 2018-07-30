@@ -5,13 +5,13 @@ import { FlowGenerator } from '../types';
 const MobilePhoneChoices = [
   {
     choice: '...build a weather app',
-    flow: function*() {
+    *flow() {
       yield postJob('weather-simple');
     },
   },
   {
     choice: '...make easy money using ad referals',
-    flow: function*() {
+    *flow() {
       yield postJob('adware-simple');
     },
   },
@@ -20,7 +20,7 @@ const MobilePhoneChoices = [
 const OldComputerChoices = [
   {
     choice: '...learn how to get it up and running',
-    flow: function*() {
+    *flow() {
       yield postJob('commodore-intro');
     },
   },
@@ -29,7 +29,7 @@ const OldComputerChoices = [
 const StarterChoices = [
   {
     choice: '...a mobile phone',
-    flow: function*() {
+    *flow() {
       yield message(
         'You use it every day. But today is different. Curiosity drives you to...',
       );
@@ -38,7 +38,7 @@ const StarterChoices = [
   },
   {
     choice: '...a dusty computer',
-    flow: function*() {
+    *flow() {
       yield message(
         `You found it in your uncle's attic. Curiosity drives you to...`,
       );

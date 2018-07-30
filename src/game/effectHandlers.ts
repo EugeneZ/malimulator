@@ -16,7 +16,7 @@ function checkForSkills(
   skills: ReadonlyArray<string>,
 ) {
   const state = getState().skills;
-  for (let skill of skills) {
+  for (const skill of skills) {
     if (!state.includes(skill)) {
       return false;
     }
@@ -105,12 +105,14 @@ async function writeCode({
   });
 }
 
+export type ListenerResults = number | boolean | void;
+
 export default function effectHandlers(
   effect: ActionType<typeof Effects>,
   dispatch: Dispatch,
   jobId: number,
   getState: () => GameState,
-  listen: Listen<void | boolean | number>,
+  listen: Listen<ListenerResults>,
   job: Job,
 ) {
   if (effect.type === getType(Effects.message)) {
