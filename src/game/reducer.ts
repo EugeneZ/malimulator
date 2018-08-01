@@ -22,7 +22,10 @@ export default function reducer(
     case getType(Actions.receivedChoices):
       return {
         ...state,
-        messages: [...state.messages, { message: 'Choose:', ...action.payload }],
+        messages: [
+          ...state.messages,
+          { message: 'Choose:', ...action.payload },
+        ],
       };
     case getType(Actions.recievedCodeTask):
       return {
@@ -33,13 +36,16 @@ export default function reducer(
       const { jobId } = action.payload;
       return {
         ...state,
-        code: [...state.code.filter(({ jobId: id }) => id !== jobId ), { jobId, done: true }],
+        code: [
+          ...state.code.filter(({ jobId: id }) => id !== jobId),
+          { jobId, done: true },
+        ],
       };
     case getType(Actions.receivedSkills):
       return {
         ...state,
-        skills: [...state.skills, ...action.payload]
-      }
+        skills: [...state.skills, ...action.payload],
+      };
     default:
       return state;
   }

@@ -27,11 +27,11 @@ export async function playGame(target: HTMLElement) {
 
     Crafty.init(screenWidth, screenHeight, target);
 
-    const understandingBoundary = Crafty.e('UnderstandingBoundary').attr(
-      offsetFromCenter(200, 200),
-    ).bind('CodeComplete', ()=>{
-      resolve();
-    });
+    const understandingBoundary = Crafty.e('UnderstandingBoundary')
+      .attr(offsetFromCenter(200, 200))
+      .bind('CodeComplete', () => {
+        resolve();
+      });
 
     const component = Crafty.e('CodeComponent').attr({
       ...offsetFromCenter(50, 50, understandingBoundary.w),

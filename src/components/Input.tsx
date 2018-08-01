@@ -1,12 +1,12 @@
 import * as React from 'react';
 
 interface Props {
-  onInput: (value: string) => void,
-};
+  onInput: (value: string) => void;
+}
 
 interface State {
-  input: string,
-};
+  input: string;
+}
 
 export default class GUI extends React.PureComponent<Props, State> {
   state = {

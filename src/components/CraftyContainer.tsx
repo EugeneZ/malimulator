@@ -4,8 +4,8 @@ import { playGame } from '../game/crafty';
 // TODO declare const Crafty: any;
 
 interface Props {
-  onComplete: ()=>void,
-};
+  onComplete: () => void;
+}
 
 export default class Code extends React.PureComponent<Props> {
   id: string = 'code_null';
@@ -20,12 +20,12 @@ export default class Code extends React.PureComponent<Props> {
 
   componentDidMount() {
     const target = document.getElementById(this.id);
-    playGame(target).then(()=>{
+    playGame(target).then(() => {
       this.props.onComplete();
     });
   }
 
   render() {
-    return <div id={this.id} style={{ backgroundColor: '#333'}}/>;
+    return <div id={this.id} style={{ backgroundColor: '#333' }} />;
   }
 }

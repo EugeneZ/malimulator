@@ -1,10 +1,10 @@
 import * as React from 'react';
 
 interface Props {
-  top: React.ReactNode,
-  bottom: React.ReactNode,
-  bottomHeight: number,
-};
+  top: React.ReactNode;
+  bottom: React.ReactNode;
+  bottomHeight: number;
+}
 
 export default class Messages extends React.PureComponent<Props> {
   render() {

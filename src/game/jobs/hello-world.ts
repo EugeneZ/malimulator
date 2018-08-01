@@ -9,5 +9,5 @@ export function* flow({ language }: { language: string }): FlowGenerator {
   yield message(`Time to figure out how ${language} works...`);
   yield writeCode();
   yield message(`I learned ${language}!`);
-  yield gainedSkills([language])
+  yield gainedSkills([language]);
 }

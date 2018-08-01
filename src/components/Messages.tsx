@@ -3,8 +3,8 @@ import { findLast } from 'ramda';
 import { MessagesState, Message } from '../game/types';
 
 interface Props {
-  messages: MessagesState,
-};
+  messages: MessagesState;
+}
 
 export default class Messages extends React.PureComponent<Props> {
   render() {

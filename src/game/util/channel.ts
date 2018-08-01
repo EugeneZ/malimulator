@@ -1,17 +1,17 @@
 import { Actions } from '../types';
 
-export type Listener<T> = (actions: Actions)=>T;
+export type Listener<T> = (actions: Actions) => T;
 
 interface ListenerHandler<T> {
-  readonly listener: Listener<T>
-  readonly resolve: (value: T)=>void
-};
+  readonly listener: Listener<T>;
+  readonly resolve: (value: T) => void;
+}
 
 export type Listen<T> = (listener: Listener<T>) => void;
 
 interface Channel<T> {
-  readonly put: (action: Actions) => void,
-  readonly listen: Listen<T>
+  readonly put: (action: Actions) => void;
+  readonly listen: Listen<T>;
 }
 
 export default function channel<T>(): Channel<T> {

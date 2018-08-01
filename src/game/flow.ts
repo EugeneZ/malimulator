@@ -11,8 +11,8 @@ export default function flowMiddleware<T>({
   getState,
   dispatch,
 }: {
-  getState: ()=>GameState,
-  dispatch: Dispatch
+  getState: () => GameState;
+  dispatch: Dispatch;
 }) {
   const { put, listen } = channel<ListenerResults>();
 
@@ -34,7 +34,13 @@ export default function flowMiddleware<T>({
           const jobId = currentJobId++;
           let nextArg: ListenerResults;
           while (true) {
-            const { value, done }: { value: ActionType<typeof Effects>, done: boolean } = generator.next(nextArg);
+            const {
+              value,
+              done,
+            }: {
+              value: ActionType<typeof Effects>;
+              done: boolean;
+            } = generator.next(nextArg);
 
             if (done) {
               break;
@@ -44,7 +50,14 @@ export default function flowMiddleware<T>({
               throw new Error('You must only yield effects.');
             }
 
-            nextArg = await effectHandlers(value, dispatch, jobId, getState, listen, job);
+            nextArg = await effectHandlers(
+              value,
+              dispatch,
+              jobId,
+              getState,
+              listen,
+              job,
+            );
           }
         },
       );

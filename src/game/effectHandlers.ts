@@ -31,7 +31,7 @@ interface EffectParams<E, T> {
   readonly jobId: number;
   readonly job: Job;
   readonly listen: Listen<T>;
-  readonly getState: ()=>GameState;
+  readonly getState: () => GameState;
 }
 
 async function message<T>({
@@ -58,15 +58,15 @@ async function choice({
   }
   dispatch(receivedChoices({ jobId, job, choices: effect.payload }));
   return listen(action => {
-      if (action.type !== getType(Actions.inputEntered)) {
-        return;
-      }
-      const num = parseInt(action.payload, 10);
+    if (action.type !== getType(Actions.inputEntered)) {
+      return;
+    }
+    const num = parseInt(action.payload, 10);
 
-      if (num > 0 && num <= effect.payload.length) {
-        return num - 1;
-      }
-    });
+    if (num > 0 && num <= effect.payload.length) {
+      return num - 1;
+    }
+  });
 }
 
 async function postJob({
@@ -82,9 +82,9 @@ async function postJob({
 
 async function gainedSkills({
   effect,
-  dispatch
+  dispatch,
 }: EffectParams<ActionType<typeof Effects.gainedSkills>, boolean>) {
-  dispatch(Actions.receivedSkills(effect.payload))
+  dispatch(Actions.receivedSkills(effect.payload));
 }
 
 async function requireSkills({
@@ -93,7 +93,10 @@ async function requireSkills({
   listen,
 }: EffectParams<ActionType<typeof Effects.requireSkills>, boolean>) {
   while (!checkForSkills(getState, effect.payload)) {
-    await listen((action: ActionType<typeof Actions>) => action.type === getType(Actions.receivedSkills));
+    await listen(
+      (action: ActionType<typeof Actions>) =>
+        action.type === getType(Actions.receivedSkills),
+    );
   }
 }
 
@@ -104,7 +107,10 @@ async function writeCode({
 }: EffectParams<ActionType<typeof Effects.writeCode>, boolean>) {
   dispatch(recievedCodeTask({ jobId }));
   return listen((action: ActionType<typeof Actions>) => {
-    if (action.type !== getType(Actions.completedCodeTask) || action.payload.jobId !== jobId) {
+    if (
+      action.type !== getType(Actions.completedCodeTask) ||
+      action.payload.jobId !== jobId
+    ) {
       return;
     }
 

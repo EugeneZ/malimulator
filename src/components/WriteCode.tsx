@@ -9,9 +9,9 @@ function Transition(props: any) {
 }
 
 interface Props {
-  code: Code,
-  onComplete: (code: Code)=>void,
-};
+  code: Code;
+  onComplete: (code: Code) => void;
+}
 
 interface State {
   open: boolean;
@@ -30,7 +30,7 @@ export default class WriteCode extends React.PureComponent<Props, State> {
         onClose={this.handleClose}
         TransitionComponent={Transition}
       >
-        <CraftyContainer onComplete={this.handleComplete}/>
+        <CraftyContainer onComplete={this.handleComplete} />
       </Dialog>
     );
   }
