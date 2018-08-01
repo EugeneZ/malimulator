@@ -12,6 +12,7 @@ export const postJob = createAction(
       options,
     }),
 );
+export const gainedSkills = createStandardAction('flow/gainedSkills')<ReadonlyArray<string>>();
 export const requireSkills = createStandardAction('flow/requireSkills')<
   ReadonlyArray<string>
 >();

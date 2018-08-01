@@ -58,7 +58,7 @@ async function choice({
   }
   dispatch(receivedChoices({ jobId, job, choices: effect.payload }));
   return listen(action => {
-      if (action.type !== 'input/entered') {
+      if (action.type !== getType(Actions.inputEntered)) {
         return;
       }
       const num = parseInt(action.payload, 10);
@@ -75,9 +75,16 @@ async function postJob({
 }: EffectParams<ActionType<typeof Effects.postJob>, void>) {
   import(`./jobs/${effect.payload.filename}`).then(
     job =>
-      effect.type === 'flow/postJob' &&
+      effect.type === getType(Effects.postJob) &&
       dispatch(runFlow(job, effect.payload.options)),
   );
+}
+
+async function gainedSkills({
+  effect,
+  dispatch
+}: EffectParams<ActionType<typeof Effects.gainedSkills>, boolean>) {
+  dispatch(Actions.receivedSkills(effect.payload))
 }
 
 async function requireSkills({
@@ -86,7 +93,7 @@ async function requireSkills({
   listen,
 }: EffectParams<ActionType<typeof Effects.requireSkills>, boolean>) {
   while (!checkForSkills(getState, effect.payload)) {
-    await listen((action: ActionType<typeof Actions>) => action.type === 'skills/received');
+    await listen((action: ActionType<typeof Actions>) => action.type === getType(Actions.receivedSkills));
   }
 }
 
@@ -100,7 +107,7 @@ async function writeCode({
     if (action.type !== getType(Actions.completedCodeTask) || action.payload.jobId !== jobId) {
       return;
     }
-    
+
     return true;
   });
 }
@@ -150,6 +157,17 @@ export default function effectHandlers(
 
   if (effect.type === getType(Effects.requireSkills)) {
     return requireSkills({
+      dispatch,
+      jobId,
+      getState,
+      listen,
+      job,
+      effect,
+    });
+  }
+
+  if (effect.type === getType(Effects.gainedSkills)) {
+    return gainedSkills({
       dispatch,
       jobId,
       getState,

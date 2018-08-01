@@ -35,6 +35,11 @@ export default function reducer(
         ...state,
         code: [...state.code.filter(({ jobId: id }) => id !== jobId ), { jobId, done: true }],
       };
+    case getType(Actions.receivedSkills):
+      return {
+        ...state,
+        skills: [...state.skills, ...action.payload]
+      }
     default:
       return state;
   }
