@@ -97,10 +97,10 @@ async function writeCode({
 }: EffectParams<ActionType<typeof Effects.writeCode>, boolean>) {
   dispatch(recievedCodeTask({ jobId }));
   return listen((action: ActionType<typeof Actions>) => {
-    if (action.type !== 'code/completed' || action.payload.jobId !== jobId) {
+    if (action.type !== getType(Actions.completedCodeTask) || action.payload.jobId !== jobId) {
       return;
     }
-
+    
     return true;
   });
 }

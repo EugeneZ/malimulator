@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { GameState } from '../game/types';
-import { newGame, inputEntered } from '../game/actionCreators';
+import { GameState, Code } from '../game/types';
+import { newGame, inputEntered, completedCodeTask } from '../game/actionCreators';
 import Screen from './Screen';
 import Input from './Input';
 import Messages from './Messages';
 import HorizontalSplitter from './HorizontalSplitter';
 import { Dispatch } from 'redux';
-import Code from './Code';
+import WriteCode from './WriteCode';
 
 type Props = {
   dispatch: Dispatch,
@@ -21,6 +21,8 @@ export default connect(state => state)(
 
     render() {
       const { messages, code } = this.props;
+      const incompleteCode = code.filter(({done})=>!done);
+      
       return (
         <Screen>
           <HorizontalSplitter
@@ -28,7 +30,7 @@ export default connect(state => state)(
             bottom={<Input onInput={this.handleInput} />}
             bottomHeight={5}
           />
-          {code.length > 0 && <Code />}
+          {incompleteCode.length > 0 && <WriteCode code={incompleteCode[0]} onComplete={this.handleCodeComplete}/>}
         </Screen>
       );
     }
@@ -36,5 +38,9 @@ export default connect(state => state)(
     handleInput = (input: string) => {
       this.props.dispatch(inputEntered(input));
     };
+
+    handleCodeComplete = (code: Code) => {
+      this.props.dispatch(completedCodeTask(code))
+    }
   },
 ) as React.ComponentClass<{}>;

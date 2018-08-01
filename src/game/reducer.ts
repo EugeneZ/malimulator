@@ -30,9 +30,10 @@ export default function reducer(
         code: [...state.code, { jobId: action.payload.jobId, done: false }],
       };
     case getType(Actions.completedCodeTask):
+      const { jobId } = action.payload;
       return {
         ...state,
-        code: [...state.code, { jobId: action.payload.jobId, done: true }],
+        code: [...state.code.filter(({ jobId: id }) => id !== jobId ), { jobId, done: true }],
       };
     default:
       return state;

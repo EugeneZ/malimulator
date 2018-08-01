@@ -23,7 +23,7 @@ export default function channel<T>(): Channel<T> {
       while (i--) {
         const { listener, resolve } = listeners[i];
         const result = listener(action);
-        if (!result) {
+        if (result || typeof result === 'number') {
           listeners.splice(i, 1);
           resolve(result);
         }
