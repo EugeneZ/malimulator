@@ -11,7 +11,7 @@ export default class Messages extends React.PureComponent<Props> {
     const { top, bottom, bottomHeight } = this.props;
     return (
       <div>
-        <div style={{ height: `${100 - bottomHeight}vh`, overflowY: 'scroll' }}>
+        <div style={{ height: `${100 - bottomHeight}vh`}}>
           {top}
         </div>
         <div style={{ height: `${bottomHeight}vh` }}>{bottom}</div>

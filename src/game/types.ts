@@ -43,6 +43,7 @@ export interface GameState {
   readonly messages: MessagesState;
   readonly skills: ReadonlyArray<string>;
   readonly code: ReadonlyArray<Code>;
+  readonly programs: ReadonlyArray<string>;
 }
 
 export type Actions = ActionType<typeof Actions>;

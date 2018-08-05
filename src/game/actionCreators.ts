@@ -12,8 +12,6 @@ export const runFlow = createStandardAction('flow/run')<
 export const receivedJob = createStandardAction('job/received')<Job>();
 
 interface MessageReceivedParams {
-  readonly jobId: number;
-  readonly job: Job;
   readonly message: string;
 }
 export const receivedMessage = createStandardAction('message/received')<

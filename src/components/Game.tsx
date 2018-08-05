@@ -11,7 +11,6 @@ import Input from './Input';
 import Messages from './Messages';
 import HorizontalSplitter from './HorizontalSplitter';
 import { Dispatch } from 'redux';
-import WriteCode from './WriteCode';
 
 type Props = {
   dispatch: Dispatch;
@@ -34,12 +33,6 @@ export default connect(state => state)(
             bottom={<Input onInput={this.handleInput} />}
             bottomHeight={5}
           />
-          {incompleteCode.length > 0 && (
-            <WriteCode
-              code={incompleteCode[0]}
-              onComplete={this.handleCodeComplete}
-            />
-          )}
         </Screen>
       );
     }

@@ -7,6 +7,7 @@ const initialState: GameState = {
   messages: [],
   skills: [],
   code: [],
+  programs: ['list'],
 };
 
 export default function reducer(

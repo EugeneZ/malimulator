@@ -1,13 +1,14 @@
-import { ActionType } from 'typesafe-actions';
+import { ActionType, getType } from 'typesafe-actions';
+import { Dispatch } from 'redux';
 import * as Effects from './effects';
-import * as Intro from './jobs/intro';
-import { JobWithFlow, GameState } from './types';
+import { GameState } from './types';
 import * as Actions from './actionCreators';
 import channel from './util/channel';
 import effectHandlers, { ListenerResults } from './effectHandlers';
-import { Dispatch } from 'redux';
+import initial from './initial';
+import { getProgram } from './jobs';
 
-export default function flowMiddleware<T>({
+export default function flowMiddleware({
   getState,
   dispatch,
 }: {
@@ -16,51 +17,43 @@ export default function flowMiddleware<T>({
 }) {
   const { put, listen } = channel<ListenerResults>();
 
-  let currentJobId = 1;
-
-  return (next: Dispatch) => (action: ActionType<typeof Actions>) => {
+  return (next: Dispatch) => async (action: ActionType<typeof Actions>) => {
     put(action);
     if (action && action.type === 'state/newGame') {
-      dispatch(Actions.runFlow(Intro, undefined));
+      initial({ dispatch, listen });
     }
-    if (
-      action &&
-      typeof action.type === 'string' &&
-      action.type === 'flow/run'
-    ) {
-      import(`./jobs/${action.payload.filename}`).then(
-        async (job: JobWithFlow) => {
-          const generator = job.flow(action.meta);
-          const jobId = currentJobId++;
-          let nextArg: ListenerResults;
-          while (true) {
-            const {
-              value,
-              done,
-            }: {
-              value: ActionType<typeof Effects>;
-              done: boolean;
-            } = generator.next(nextArg);
+    if (action && action.type === getType(Actions.inputEntered)) {
+      const [name, ...args] = action.payload.split(' ');
+      const program = getProgram(name);
+      if (!program) {
+        dispatch(
+          Actions.receivedMessage({ message: `Program not found: ${name}` }),
+        );
+        return next(action);
+      }
 
-            if (done) {
-              break;
-            }
+      const generator = program.run({ getState, args });
+      let nextArg: ListenerResults;
 
-            if (!value) {
-              throw new Error('You must only yield effects.');
-            }
+      while (true) {
+        const {
+          value,
+          done,
+        }: {
+          value: ActionType<typeof Effects>;
+          done: boolean;
+        } = generator.next(nextArg);
 
-            nextArg = await effectHandlers(
-              value,
-              dispatch,
-              jobId,
-              getState,
-              listen,
-              job,
-            );
-          }
-        },
-      );
+        if (done) {
+          break;
+        }
+
+        if (!value) {
+          throw new Error('You must only yield effects.');
+        }
+
+        nextArg = await effectHandlers(value, dispatch, getState, listen);
+      }
     }
 
     return next(action);
